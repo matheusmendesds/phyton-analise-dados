@@ -135,3 +135,95 @@ plt.figure(figsize=(12,5))
 plt.title('Análise das Vendas de Games(mi)')
 sns.scatterplot(data=Base_Dados,x='Jogo',y='Global', color=Paleta_Cores[0])
 
+Base_Dados.query("Publisher == 'Rockstar Games'")
+
+Base_Dados.query("`North America` > 4")
+
+Base_Dados.query("`Europe` > 4")
+
+Base_Dados.query("`Japan` > 0.5")
+
+Base_Dados.query("`Rest of World` > 2")
+
+#Relatorio --> report para o Chefe
+
+fig, ax = plt.subplots( figsize=(18,15))
+
+#Cor de fundo
+Cor_Fundo = '#f5f5f5'
+ax.set_facecolor( Cor_Fundo)
+fig.set_facecolor( Cor_Fundo)
+
+#Estilo dos graficos
+plt.style.use('seaborn-v0_8')
+plt.suptitle('Python para Análise de Dados \n Projeto pratico 5 - Análise Mercado de Games PS4', fontsize=22, color='#404040',fontweight=600)
+#Parametros para o grid
+Linhas = 3
+Colunas = 2
+
+#Acessando Grafico 1
+plt.subplot(Linhas,Colunas, 1)
+#titulo
+plt.title(' Quantidade de vendas Globais(mi)',loc='left',fontsize=14)
+#Grafico
+plt.bar(Base_Dados['Year'], Base_Dados['Global'],color='#69b3a2')
+
+
+#Acessando Grafico 2
+plt.subplot(Linhas,Colunas, 2)
+plt.title('Analise da distribuição Global (mi)')
+#grafico
+sns.boxplot(data=Base_Dados, x='Year',y='Global')
+
+
+# Acessando Grafico 3
+plt.subplot(Linhas,Colunas, 3)
+
+Largura_barra = 0.85
+Rotulos = Analise['Year']
+Grupos = [0,1,2,3,4,5]
+plt.title('Análise distribuição por continentes', loc='left', fontsize=14)
+
+#plot america
+plt.bar(Grupos, AmericaNorte, width=Largura_barra, color='#b5ffb9', edgecolor='white')
+#plot europa
+plt.bar(Grupos,Europa,width=Largura_barra,bottom=AmericaNorte,color='#f9bc86',edgecolor='white')
+#plot Japao
+plt.bar(Grupos,Japao,width=Largura_barra,bottom=[ A + B for A, B in zip(AmericaNorte, Europa) ],color='#a3acff',edgecolor='white')
+#plot resto do mundo
+plt.bar(Grupos,Japao,width=Largura_barra,bottom=[ A + B + C for A, B , C in zip(AmericaNorte, Europa,Japao) ],color='#d3acfe',edgecolor='white')
+
+# Labels
+plt.xticks( Grupos, Rotulos )
+plt.xlabel('Grupo')
+plt.ylabel('Distribuição %')
+
+# Legenda
+plt.legend( ['America N', 'Europa',' Japão', 'Mundo'], loc='upper left', bbox_to_anchor=(0.15, -0.1), ncol=4 );
+
+#Acessando o Grafico 4
+plt.subplot(Linhas,Colunas, 4)
+plt.title('Analise dos produtores de Game(mi)',loc='left',fontsize=14)
+sns.scatterplot(data=Base_Dados,x='Produtor',y='Global',color=Paleta_Cores[0]);
+
+#Acessando o Grafico 5
+plt.subplot(Linhas,Colunas, 5)
+plt.title('Analise dos generos de Game(mi)',loc='left',fontsize=14)
+sns.scatterplot(data=Base_Dados,x='Genero',y='Global',color=Paleta_Cores[0]);
+
+#Grafico 6
+plt.subplot(Linhas,Colunas, 6)
+plt.title('Analise dos Games(mi)',loc='left',fontsize=14)
+sns.scatterplot(data=Base_Dados,x='Jogo',y='Global',color=Paleta_Cores[0]);
+
+#AJustar o layout
+plt.subplots_adjust(hspace=0.35, wspace=0.15)
+
+Rodape= '''
+  Esse relatório foi elaborado no treinamento d "Python para Análise de Dados"
+  Está disponível no canal do youtube @Data Viking
+  by: Matheus Mendes
+'''
+
+fig.text(0.5,-0.05,Rodape,ha='center',va='bottom',size=12, color='#938ca1')
+
